@@ -18,16 +18,22 @@
       }
     },
 
+    // Prints array of arrays
+    // Each inner array is a row
+    // 0 = space not filled, 1 = space filled
     rows: function() {
       return _(_.range(this.get('n'))).map(function(rowIndex) {
         return this.get(rowIndex);
       }, this);
     },
 
+    // Given a location on board, with 0 index arrays
+    // Toggles between 0 = spaced not filled, 1 = space filled
     togglePiece: function(rowIndex, colIndex) {
       this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
+
 
     _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex) {
       return colIndex - rowIndex;
@@ -79,12 +85,34 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var row = this.get(rowIndex);
+      var isConflict = false;
+      var isQueen = false;
+      //find out if there is more than 1, 1 in the row.
+      for(let i = 0; i < row.length; i++) {
+        if (isQueen && row[i] === 1) {
+          isConflict = true;
+        }
+         if (row[i] ===1) {
+           isQueen = true;
+         }
+      }
+
+      return isConflict;
     },
 
-    // test if any rows on this board contain conflicts
+
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      //take grid and
+      var grid = this.rows();
+      //loop through and
+      for (let i = 0; i < grid.length; i++) {
+        if(this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
 
@@ -94,12 +122,34 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      // Pull entire grid
+      var grid = this.rows();
+      // Loop through each row
+      var isConflict = false;
+      var isQueen = false;
+
+      for (let i = 0; i < grid.length; i++) {
+        if (isQueen && grid[i][colIndex] === 1) {
+          isConflict = true;
+        }
+        if (grid[i][colIndex] === 1) {
+          isQueen = true;
+        }
+      }
+      return isConflict;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      //take grid and
+      var grid = this.rows();
+      //loop through and
+      for (let i = 0; i < grid.length; i++) {
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
