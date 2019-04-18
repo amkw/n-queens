@@ -68,7 +68,7 @@
     },
 
 
-/*
+    /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
@@ -89,13 +89,13 @@
       var isConflict = false;
       var isQueen = false;
       //find out if there is more than 1, 1 in the row.
-      for(let i = 0; i < row.length; i++) {
+      for (let i = 0; i < row.length; i++) {
         if (isQueen && row[i] === 1) {
           isConflict = true;
         }
-         if (row[i] ===1) {
-           isQueen = true;
-         }
+        if (row[i] === 1) {
+          isQueen = true;
+        }
       }
 
       return isConflict;
@@ -107,7 +107,7 @@
       var grid = this.rows();
       //loop through and
       for (let i = 0; i < grid.length; i++) {
-        if(this.hasRowConflictAt(i)) {
+        if (this.hasRowConflictAt(i)) {
           return true;
         }
       }
@@ -161,6 +161,8 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalRowIndexAtFirstColumn) {
       var i = majorDiagonalRowIndexAtFirstColumn;
       // console.log("this: ", this, " - - - - - " ,i)
+
+    
       var grid = this.rows();
       var row = grid[i];
       var hasQueen = {
@@ -168,22 +170,22 @@
         1: false,
         2: false,
         3: false
-      }
+      };
       var hasConflict = {
         0: false,
         1: false,
         2: false,
         3: false
-      }
+      };
 
-      var compareRow = grid[i+1];
+      var compareRow = grid[i + 1];
       for (let j = 0; j < row.length; j++) {
-        var compareSpace = compareRow[j+1];
+        var compareSpace = compareRow[j + 1];
         var currentSpace = row[j];
-        if(currentSpace === 1){
+        if (currentSpace === 1) {
           hasQueen[j] = true;
         }
-        if(compareSpace === 1 && hasQueen[j]) {
+        if (compareSpace === 1 && hasQueen[j]) {
           hasConflict[j] = true;
         }
       }
@@ -191,15 +193,18 @@
       return hasConflict;
       // todo: conflict not adjacent
       // todo: build hasQueen and hasConflict programmatically
+      //recurse to allow for gapped diagnal checking, or revisit the trev's billion loops idea. 
     },
 
     // test if any major diagonals on this board contain conflicts
-  hasAnyMajorDiagonalConflicts: function() {
-    var grid = this.rows();
+    hasAnyMajorDiagonalConflicts: function() {
+      var grid = this.rows();
+
       //call func above
       // for loop
       for (let i = 0; i < grid.length; i++) {
-        if ( i === grid.length-1) {
+        if ( i === grid.length - 1) {
+          // debugger
           return false;
         }
         var conflictObj = this.hasMajorDiagonalConflictAt(i);
@@ -212,6 +217,7 @@
       // get keys
       //use keys to get values
       //if true => true
+      // debugger
       return false;
     },
 

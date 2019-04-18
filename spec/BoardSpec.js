@@ -59,6 +59,7 @@ describe('Board', function() {
       [1, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 1, 0]
+      // todo: this is our problem child
     ]);
   });
 
