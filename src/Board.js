@@ -122,9 +122,7 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      // Pull entire grid
       var grid = this.rows();
-      // Loop through each row
       var isConflict = false;
       var isQueen = false;
 
@@ -159,60 +157,36 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalRowIndexAtFirstColumn) {
-      var i = majorDiagonalRowIndexAtFirstColumn;
-      // console.log("this: ", this, " - - - - - " ,i)
       var grid = this.rows();
-      var row = grid[i];
-      var hasQueen = {
-        0: false,
-        1: false,
-        2: false,
-        3: false
-      }
-      var hasConflict = {
-        0: false,
-        1: false,
-        2: false,
-        3: false
-      }
+      var isConflict = false;
+      var isQueen = false;
+      var startOfDiag = majorDiagonalRowIndexAtFirstColumn;
 
-      var compareRow = grid[i+1];
-      for (let j = 0; j < row.length; j++) {
-        var compareSpace = compareRow[j+1];
-        var currentSpace = row[j];
-        if(currentSpace === 1){
-          hasQueen[j] = true;
-        }
-        if(compareSpace === 1 && hasQueen[j]) {
-          hasConflict[j] = true;
+      for (let i = 0; i < grid.length; i++) {
+        // if (i+startOfDiag >= 0) {
+        if (this._isInBounds(i, i+startOfDiag)) {
+          if (isQueen && grid[i][i+startOfDiag] === 1) {
+            isConflict = true;
+          }
+          if (grid[i][i+startOfDiag] === 1) {
+            isQueen = true;
+          }
         }
       }
-
-      return hasConflict;
-      // todo: conflict not adjacent
-      // todo: build hasQueen and hasConflict programmatically
+      return isConflict;
     },
 
     // test if any major diagonals on this board contain conflicts
   hasAnyMajorDiagonalConflicts: function() {
     var grid = this.rows();
-      //call func above
-      // for loop
-      for (let i = 0; i < grid.length; i++) {
-        if ( i === grid.length-1) {
-          return false;
-        }
-        var conflictObj = this.hasMajorDiagonalConflictAt(i);
-        for (var key in conflictObj) {
-          if (conflictObj[key]) {
-            return true;
-          }
-        }
+    var startIndex = -(grid.length -1);
+
+    for (let i = startIndex; i < grid.length; i++) {
+      if (this.hasMajorDiagonalConflictAt(i)) {
+        return true;
       }
-      // get keys
-      //use keys to get values
-      //if true => true
-      return false;
+    }
+    return false;
     },
 
 
@@ -222,11 +196,39 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false;
+      var grid = this.rows();
+      var isConflict = false;
+      var isQueen = false;
+      var startOfDiag = minorDiagonalColumnIndexAtFirstRow;
+
+      for (let i = 0; i > grid.length; i++) {
+        // if (i+startOfDiag >= 0) {
+          debugger;
+        if (this._isInBounds(i, startOfDiag-i)) {
+          if (isQueen && grid[i][startOfDiag-i] === 1) {
+            isConflict = true;
+          }
+          if (grid[i][startOfDiag-i] === 1) {
+            isQueen = true;
+          }
+        }
+        // startOfDiag = startOfDiag+1;
+      }
+      return isConflict;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      console.log(this);
+      var grid = this.rows();
+      var endIndex = (grid.length - 1) + grid.length;
+
+      for (let i = 0; i < endIndex; i++) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      console.log('returning false');
       return false;
     }
 
